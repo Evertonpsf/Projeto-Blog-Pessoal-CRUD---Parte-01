@@ -3,7 +3,8 @@
 
 import { Transform, TransformFnParams } from "class-transformer";
 import { IsNotEmpty } from "class-validator";
-import { Column, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Tema } from "../../tema/entities/tema.entity";
 
 
 @Entity({ name: "tb_postagens" })// aqui esatamos criando a tabela personagens. as chaves serve para indicar que é uma propriedade.
@@ -26,5 +27,11 @@ export class Postagem {
     @UpdateDateColumn() // este decorador preenche a data e a hora automaticamente em nossa tabela.
     data: Date;
 
+        // este lado é o muitos para um, ou seja, muitas postagens possui um tema.
+    @ManyToOne(() => Tema, (tema) => tema.postagem, {
+        onDelete: "CASCADE" // so tem esse delete aqui por que aqui é a classe filha, ela que tem que ser deletada e nao a principal
+    })
+
+    tema: Tema; // essa relacao é do tipo asssociacao, o objeto da classe tema na classe postagem
 
 }
